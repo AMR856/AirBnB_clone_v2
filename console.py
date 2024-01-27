@@ -10,7 +10,32 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import re
 
+def is_float(theValue):
+    try:
+        myTemp = float(theValue)
+    except (TypeError, ValueError):
+        return False
+    else:
+        return True
+
+def is_integer(theValue):
+    try:
+        myTemp = int(theValue)
+    except (TypeError, ValueError):
+        return False
+    else:
+        return True
+
+def checkingTheCondition(theValue):
+    if is_integer(theValue) == True:
+        return int(theValue)
+    elif is_float(theValue) == True:
+        return float(theValue)
+    else:
+        theNewValue = re.sub('_', " ", re.sub("\"", "", theValue))
+        return theNewValue
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
@@ -73,7 +98,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] =='}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,16 +140,24 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        theLine = args.split()
+        if not theLine[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif theLine[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        theKargs = {}
+        for i in range(1, len(theLine), 1):
+            theArg = theLine[i].split('=')
+            theKey = theArg[0]
+            theValue = theArg[1]
+            theValueAfterFixing = checkingTheCondition(theValue)
+            theKargs[theKey] = theValueAfterFixing
+
+        new_instance = HBNBCommand.classes[theLine[0]](**theKargs)
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -272,7 +305,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -280,10 +313,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
