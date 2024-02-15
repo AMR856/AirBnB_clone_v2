@@ -14,6 +14,7 @@ class BaseModel:
             self.updated_at = datetime.now()
             storage.new(self)
         else:
+            from models import storage
             if 'id' not in kwargs:
                 self.id = str(uuid.uuid4())
             for myKey, myValue in kwargs.items():
@@ -24,8 +25,11 @@ class BaseModel:
                     setattr(self, myKey, myValue)
             if 'updated_at' not in kwargs:
                 kwargs['updated_at'] = datetime.now()
+                setattr(self, "updated_at", kwargs['updated_at'])
             if 'created_at' not in kwargs:
                 kwargs['created_at'] = datetime.now()
+                setattr(self, "created_at", kwargs['created_at'])
+            storage.new(self)
 
     def __str__(self):
         """Returns a string representation of the instance"""
