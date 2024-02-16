@@ -9,8 +9,8 @@ def do_pack():
         if os.path.isdir("versions") is False:
             local("mkdir versions")
         theDateVar = datetime.now().strftime("%Y%m%d%H%M%S")
-        theFileName = f"versions/web_static_{theDateVar}"
+        theFileName = f"versions/web_static_{theDateVar}.taz"
         local(f"tar -cvzf {theFileName} web_static")
-        return f"{theFileName}.tgz"
+        return f"{theFileName}"
     except Exception as Anything:
         None
