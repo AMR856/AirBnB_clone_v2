@@ -4,13 +4,13 @@ from fabric.api import local
 from datetime import datetime
 import os
 def do_pack():
-    """A function to make a tar file fro the folder"""
+    """generates a tgz archive"""
     try:
+        date = datetime.now().strftime("%Y%m%d%H%M%S")
         if os.path.isdir("versions") is False:
             local("mkdir versions")
-        theDateVar = datetime.now().strftime("%Y%m%d%H%M%S")
-        theFileName = f"versions/web_static_{theDateVar}.taz"
-        local(f"tar -cvzf {theFileName} web_static")
-        return f"{theFileName}"
-    except Exception as Anything:
+        file_name = "versions/web_static_{}.tgz".format(date)
+        local("tar -cvzf {} web_static".format(file_name))
+        return file_name
+    except:
         return None
