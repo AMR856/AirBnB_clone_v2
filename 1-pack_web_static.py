@@ -13,4 +13,4 @@ def do_pack():
         local(f"tar -cvzf {theFileName} web_static")
         return f"{theFileName}"
     except Exception as Anything:
-        None
+        return None
