@@ -2,7 +2,7 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel
 from models.base_model import Base
-from sqlalchemy import create_engine, Column, Integer, String, MetaData
+from sqlalchemy import create_engine, Column, Integer, String, MetaData, Float
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 from os import getenv
@@ -10,10 +10,10 @@ from models.city import City
 import models
 
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
-    city_id = Column(String(60), ForeignKey("cities.id"), nullable=False, )
+    city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
@@ -21,6 +21,6 @@ class Place(BaseModel):
     number_bathrooms = Column(Integer, default=0, nullable=False)
     max_guest = Column(Integer, default=0, nullable=False)
     price_by_night = Column(Integer, default=0, nullable=False)
-    latitude = Column(float, nullable=True)
-    longitude = Column(float, nullable=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
     amenity_ids = []
