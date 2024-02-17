@@ -22,7 +22,7 @@ def do_deploy(archive_path):
         return False
     if run(f"/tmp/{fileNameAll}").failed is True:
         return False
-    if run(f"mv //data/web_static/releases/{fileNameWithoutExt}/web_static/* /data/web_static/releases/{fileNameWithoutExt}/").failed is True:
+    if run(f"mv /data/web_static/releases/{fileNameWithoutExt}/web_static/* /data/web_static/releases/{fileNameWithoutExt}/").failed is True:
         return False
     if run(f"rm -rf /data/web_static/releases/{fileNameWithoutExt}/web_static").failed is True:
         return False
