@@ -11,28 +11,22 @@ def do_deploy(archive_path):
     """Just be moduled for me"""
     if os.path.isfile(archive_path) is False:
         return False
-    fileNameAll = archive_path.split('/')[1]
-    fileNameWithoutExt = fileNameAll.split('.')[0]
-
-    if put(archive_path, f"/tmp/{fileNameAll}").failed is True:
+    fileA = archive_path.split('/')[1]
+    fileNo = fileA.split('.')[0]
+    Path = '/data/web_static/releases/'
+    if put(archive_path, f"/tmp/{fileA}").failed is True:
         return False
-    if run("mkdir -p /data/web_static/releases/"
-            f"{fileNameWithoutExt}/").failed is True:
+    if run("mkdir -p {}{}/".format(Path, fileNo)).failed is True:
         return False
-    if run(f"tar -xzf /tmp/{fileNameAll} -C"
-           f"/data/web_static/releases/{fileNameWithoutExt}/").failed is True:
+    if run(f"tar -xzf /tmp/{fileA} -C {Path}{fileNo}/").failed is True:
         return False
-    if run(f"/tmp/{fileNameAll}").failed is True:
+    if run(f"/tmp/{fileA}").failed is True:
         return False
-    if run("mv //data/web_static/releases/"
-           f"{fileNameWithoutExt}/web_static/* /data/web_static/releases/"
-           f"{fileNameWithoutExt}/").failed is True:
+    if run(f"mv {Path}{fileNo}/web_static/* {Path}{fileNo}/").failed is True:
         return False
-    if run("rm -rf /data/web_static/releases/"
-           f"{fileNameWithoutExt}/web_static").failed is True:
+    if run(f"rm -rf {Path}{fileNo}/web_static").failed is True:
         return False
     if run("rm -rf /data/web_static/current").failed is True:
         return False
-    if run("ln -s /data/web_static/releases/"
-           f"{fileNameWithoutExt} /data/web_static/current").failed is True:
+    if run(f"ln -s {Path}{fileNo} /data/web_static/current").failed is True:
         return False
