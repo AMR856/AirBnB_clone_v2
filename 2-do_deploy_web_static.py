@@ -7,6 +7,7 @@ import os
 env.hosts = ['34.224.3.252', '100.25.129.71']
 
 def do_deploy(archive_path):
+    """Just be moduled for me"""
     if os.path.isfile(archive_path) is False:
         return False
     fileNameAll = archive_path.split('/')[1]
