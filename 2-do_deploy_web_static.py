@@ -16,11 +16,11 @@ def do_deploy(archive_path):
 
     if put(archive_path, f"/tmp/{fileNameAll}").failed is True:
         return False
-    if run(f"mkdir -p /data/web_static/releases/"
-            "{fileNameWithoutExt}/").failed is True:
+    if run("mkdir -p /data/web_static/releases/"
+            f"{fileNameWithoutExt}/").failed is True:
         return False
     if run(f"tar -xzf /tmp/{fileNameAll} -C"
-           "/data/web_static/releases/{fileNameWithoutExt}/").failed is True:
+           f"/data/web_static/releases/{fileNameWithoutExt}/").failed is True:
         return False
     if run(f"/tmp/{fileNameAll}").failed is True:
         return False
@@ -28,8 +28,8 @@ def do_deploy(archive_path):
            f"{fileNameWithoutExt}/web_static/* /data/web_static/releases/"
            f"{fileNameWithoutExt}/").failed is True:
         return False
-    if run(f"rm -rf /data/web_static/releases/"
-           "{fileNameWithoutExt}/web_static").failed is True:
+    if run("rm -rf /data/web_static/releases/"
+           f"{fileNameWithoutExt}/web_static").failed is True:
         return False
     if run("rm -rf /data/web_static/current").failed is True:
         return False
