@@ -39,8 +39,8 @@ class DBStorage:
                 objs.extend(records)
         else:
             if cls is str:
-                classObject = eval(cls)
-            obj = self.__session.query(classObject).all()
+                cls = eval(cls)
+            objs = self.__session.query(cls).all()
         for obj in objs:
             classType = type(obj)
             theKey = "{}.{}".format(classType.__name__, obj.id)
