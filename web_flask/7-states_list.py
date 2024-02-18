@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 """Don't forget this name"""
 from flask import Flask, render_template
-from markupsafe import escape
+from models import *
 from models import storage
 
 app = Flask(__name__)
 
 
 @app.teardown_appcontext
-def teardown_method():
+def teardown_method(exception):
     storage.close()
 
 
