@@ -65,4 +65,4 @@ class DBStorage:
 
     def close(self):
         """A closer here"""
-        self.reload(self.__session)
+        self.__session.remove()
