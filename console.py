@@ -58,7 +58,7 @@ class HBNBCommand(cmd.Cmd):
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
+            print('(hbnb) ',end='')
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -240,11 +240,19 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for k, v in storage.all(HBNBCommand.classes[args]).items():
-                print_list.append(str(v))
+                print_list.append(v)
         else:
             for k, v in storage.all().items():
-                print_list.append(str(v))
-        print(print_list)
+                print_list.append(v)
+        print('[', end='')
+        for item in print_list:
+            if hasattr(item, '_sa_instance_state'):
+                delattr(item, '_sa_instance_state')
+            if item != print_list[-1]:
+                print(item, end=' ')
+            else:
+                print(item, end='')
+        print(']')
 
     def help_all(self):
         """ Help information for the all command """
