@@ -67,3 +67,5 @@ class BaseModel:
         """A method to delete an element from the storage"""
         from models import storage
         storage.delete(self)
+
+# hbnb_dev_pwd
