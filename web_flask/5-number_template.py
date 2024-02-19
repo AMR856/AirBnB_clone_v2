@@ -1,56 +1,44 @@
 #!/usr/bin/python3
-"""
-    Sript that starts a Flask web application
- """
+"""Don't forget this name"""
 from flask import Flask, render_template
+from markupsafe import escape
+import re
+
 app = Flask(__name__)
 
 
-@app.route('/', strict_slashes=False)
-def hello_hbn():
-    """
-        function to return Hello HBNB!
-    """
+@app.route("/", strict_slashes=False)
+def hello_hbnb():
     return "Hello HBNB!"
 
 
-@app.route('/hbnb', strict_slashes=False)
+@app.route("/hbnb", strict_slashes=False)
 def hbnb():
-    """
-        function to return HBNB
-    """
-    return "HBNB"
+    return 'HBNB'
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def text_var(text):
-    """
-        function to display text variable passed in
-    """
-    return "C {}".format(text.replace("_", " "))
+def c_func(text):
+    the_text = re.sub('_', ' ', text)
+    return f'C {escape(the_text)}'
 
 
+@app.route('/python/', defaults={'text': 'is cool'})
 @app.route('/python/<text>', strict_slashes=False)
-def text_var_python(text="is cool"):
-    """
-        function to display text variable, with default "is cool"
-    """
-    return "Python {}".format(text.replace("_", " "))
+def python_fun(text):
+    the_text = re.sub('_', ' ', text)
+    return f'Python {escape(the_text)}'
 
 
-@app.route('/number/<int:n>', strict_slashes=False)
-def var_num(n):
-        """
-             function to display a variable, but only if an int
-        """
-        return "{} is a number".format(n)
+@app.route('/number/<int:n>')
+def my_number(n):
+    return f'{n} is a number'
 
 
-@app.route('/number_template/<int:n>', strict_slashes=False)
-def var_num_template(n):
-        """
-            function to display number in html page
-        """
-        return render_template("5-number.html", n=n)
-if __name__ == '__main__':
-        app.run(host='0.0.0.0', port=5000)
+@app.route('/number_template/<int:n>')
+def show_template(n):
+    return render_template('5-number.html', n=n)
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
