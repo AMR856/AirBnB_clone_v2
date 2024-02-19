@@ -1,21 +1,23 @@
 #!/usr/bin/python3
-"""A module here to do stuff"""
-from fabric.api import run, put
-from fabric.api import env
-import os
+"""
+Fabric script based on the file 1-pack_web_static.py that distributes an
+archive to the web servers
+"""
 
-env.hosts = ['34.224.3.252', '100.25.129.71']
+from fabric.api import put, run, env
+from os.path import exists
+env.hosts = ['34.239.255.31', '100.25.155.253']
 
 
 def do_deploy(archive_path):
-    """Just be moduled for me"""
-    if os.path.isfile(archive_path) is False:
+    """distributes an archive to the web servers"""
+    if exists(archive_path) is False:
         return False
     try:
         file_n = archive_path.split("/")[-1]
         no_ext = file_n.split(".")[0]
         path = "/data/web_static/releases/"
-        put(archive_path, f'/tmp/{file_n}')
+        put(archive_path, '/tmp/')
         run('mkdir -p {}{}/'.format(path, no_ext))
         run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
         run('rm /tmp/{}'.format(file_n))
